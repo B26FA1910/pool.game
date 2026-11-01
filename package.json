@@ -1,0 +1,13 @@
+{
+  "name": "pool-game",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Билльярд — 8 бөмбөгийн HTML тоглоом, онлайн горимтой (Cloudflare Worker + Durable Object)",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4"
+  }
+}
