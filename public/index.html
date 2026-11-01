@@ -45,7 +45,35 @@ select{padding:0 8px;max-width:178px}
 .pinfo{min-width:0}
 .pname{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pgroup{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pballs{display:flex;gap:3px;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
+.pballs{display:flex;gap:3px;margin-top:4px;flex-wrap:nowrap}
+.ava{position:relative;width:38px;height:38px;flex:none;border-radius:50%;display:grid;place-items:center;
+  background:var(--avc,#2f6fd8);color:#fff;font-weight:800;font-size:16px;box-shadow:inset 0 -3px 7px rgba(0,0,0,.35)}
+#p1 .ava{--avc:#d8682d}
+.ava svg{position:absolute;left:-5px;top:-5px;width:48px;height:48px;transform:rotate(-90deg);pointer-events:none}
+.ava .trk{fill:none;stroke:rgba(255,255,255,.07);stroke-width:3}
+.ava .prg{fill:none;stroke:var(--accent);stroke-width:3.2;stroke-linecap:round;stroke-dasharray:125.66;stroke-dashoffset:125.66}
+.ava.warn .prg{stroke:#ff5a43}
+.pcard:not(.active) .prg{opacity:0}
+.pcard.right{flex-direction:row-reverse;text-align:right}
+.pcard.right .pballs{justify-content:flex-end}
+.pwin{font-size:12px;color:var(--accent);white-space:nowrap;margin-left:auto}
+.pcard.right .pwin{margin-left:0;margin-right:auto}
+.mini.slot{background:#090c0b;box-shadow:inset 0 1px 3px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.07)}
+.mini.eight{box-shadow:0 0 0 2px var(--accent),inset -2px -2px 3px rgba(0,0,0,.35)}
+#bigSpin{width:min(220px,62vw,44vh);aspect-ratio:1;margin:6px auto 4px;border-radius:50%;position:relative;touch-action:none;
+  background:radial-gradient(circle at 35% 30%,#fff,#ebe7dc 55%,#b6b1a3);box-shadow:0 6px 22px rgba(0,0,0,.5)}
+#bigSpin::before,#bigSpin::after{content:"";position:absolute;background:rgba(0,0,0,.14)}
+#bigSpin::before{left:50%;top:10%;bottom:10%;width:1px}
+#bigSpin::after{top:50%;left:10%;right:10%;height:1px}
+#bigDot{position:absolute;width:24px;height:24px;border-radius:50%;background:#d63b2f;transform:translate(-50%,-50%);
+  box-shadow:0 0 0 3px rgba(255,255,255,.85);pointer-events:none}
+.card.spincard h2{text-align:center}
+.card.spincard{max-width:340px}
+body.compact .card.spincard{padding:12px 16px}
+body.compact .card.spincard h2{font-size:16px;margin-bottom:4px}
+body.compact .card.spincard .note{display:none}
+body.compact .card.spincard .row{margin-top:10px}
+.card.spincard .note{text-align:center;margin-top:8px}
 .mini{width:15px;height:15px;border-radius:50%;box-shadow:inset -2px -2px 3px rgba(0,0,0,.35),0 0 0 1px rgba(0,0,0,.25)}
 #msg{min-height:20px;text-align:center;font-size:14px;transition:color .2s}
 #msg.foul{color:#ff9580}
@@ -133,7 +161,9 @@ body.compact h1{display:none}
 body.compact .players{grid-area:players}
 body.compact .pcard{padding:3px 9px;gap:8px}
 body.compact .pname{font-size:13px}
-body.compact .pgroup{font-size:11px}
+body.compact .ava{width:30px;height:30px;font-size:13px}
+body.compact .ava svg{left:-5px;top:-5px;width:40px;height:40px}
+body.compact .pballs{margin-top:2px}
 body.compact .mini{width:12px;height:12px}
 body.compact #netbar{grid-area:net;min-height:18px;font-size:12px}
 body.compact #netbar .btn{height:22px}
@@ -190,9 +220,12 @@ body.compact #side.disabled .grp{opacity:.38}
 @media (max-width:420px){ h1{display:none} header select{margin-right:auto} }
 @media (max-width:560px){
   h1 span,.wide{display:none}
-  .pcard{flex-direction:column;align-items:flex-start;gap:4px;padding:6px 9px}
-  .pballs{margin-left:0;justify-content:flex-start}
+  .pcard{gap:7px;padding:6px 8px}
   .mini{width:13px;height:13px}
+  .pballs{gap:2px}
+  .ava{width:32px;height:32px;font-size:14px}
+  .ava svg{left:-5px;top:-5px;width:42px;height:42px}
+  .pwin{display:none}
   select{max-width:150px}
 }
 @media (max-height:520px){
@@ -222,8 +255,8 @@ body.compact #side.disabled .grp{opacity:.38}
     <button class="btn icon" id="fsBtn" title="Бүтэн дэлгэц" hidden>⛶</button>
   </header>
   <div class="players">
-    <div class="pcard" id="p0"><div class="pinfo"><div class="pname"></div><div class="pgroup"></div></div><div class="pballs"></div></div>
-    <div class="pcard" id="p1"><div class="pinfo"><div class="pname"></div><div class="pgroup"></div></div><div class="pballs"></div></div>
+    <div class="pcard" id="p0"><div class="ava"><svg viewBox="0 0 44 44"><circle class="trk" cx="22" cy="22" r="20"/><circle class="prg" cx="22" cy="22" r="20"/></svg><span class="ini"></span></div><div class="pinfo"><div class="pname"></div><div class="pballs"></div></div><div class="pwin"></div></div>
+    <div class="pcard right" id="p1"><div class="ava"><svg viewBox="0 0 44 44"><circle class="trk" cx="22" cy="22" r="20"/><circle class="prg" cx="22" cy="22" r="20"/></svg><span class="ini"></span></div><div class="pinfo"><div class="pname"></div><div class="pballs"></div></div><div class="pwin"></div></div>
   </div>
   <div id="netbar"><span id="netTxt"></span><button class="btn" id="netLeave">Гарах</button></div>
   <div id="msg"></div>
@@ -246,7 +279,8 @@ const W=1000,H=500,R=11,RAIL=50,CW=16;
 const CG=41,CRC=16,CWALL=26;   // corner pocket: rail end, rounded jaw radius, throat wall
 const SG=39,SRC=14,SWALL=12;   // middle pocket: rail end (from centre), jaw radius, wall
 const FIX=1/120,MAXV=2300,FR_C=100,FR_L=0.3,STOP_V=4,E_BALL=0.97,E_RAIL=0.8,SLIP_K=1000,ROLL=0.28;
-const STRIKE_MS=90;
+const STRIKE_MS=90, TRAY=40, TUBE_X=-RAIL-TRAY/2-2, TUBE_Y0=-RAIL+6, TUBE_Y1=H+RAIL-6;
+const DROP_MS=210, ROLL_MS=620, SHOT_SEC=30;
 const HEAD_X=W/4, FOOT={x:W*0.75,y:H/2}, HEAD={x:W/4-30,y:H/2};
 const TAU=Math.PI*2;
 const COLORS=['#f7f4ec','#f2c21b','#1f4fd1','#d6262b','#5a2d8c','#f07a14','#11804a','#7c1d22','#151515','#f2c21b','#1f4fd1','#d6262b','#5a2d8c','#f07a14','#11804a','#7c1d22'];
@@ -293,7 +327,7 @@ const POCKETS=[
 ];
 
 /* ================= physics ================= */
-const newShot=()=>({firstHit:null,pocketed:[],t:0});
+const newShot=()=>({firstHit:null,pocketed:[],t:0,where:{}});
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;}
 function rack(){
   const balls=[];
@@ -314,9 +348,9 @@ function rack(){
   return balls;
 }
 function sink(S,b,p,ev){
-  b.on=false; const x=b.x,y=b.y; b.vx=0; b.vy=0;
-  S.shot.pocketed.push(b.id);
-  if(ev) ev.sinks.push({id:b.id,x,y,px:p.x,py:p.y});
+  b.on=false; const x=b.x,y=b.y,k=POCKETS.indexOf(p); b.vx=0; b.vy=0;
+  S.shot.pocketed.push(b.id); S.shot.where[b.id]=k;
+  if(ev) ev.sinks.push({id:b.id,x,y,pk:k});
 }
 function substep(S,h,ev){
   const B=S.balls, sh=S.shot;
@@ -426,12 +460,15 @@ function judge(ctx,rec){
     else if(rec.firstHit===8) foul='8-р бөмбөгийг эхэлж мөргөж болохгүй';
   }
   if(cueIn) foul='цагаан бөмбөг нүхэнд орлоо';
+  if(ctx.timeout) foul='цохих хугацаа дууссан';
   const out={foul,cont:false,win:null,why:'',respot8:false,assign:null,groups:ctx.groups.slice()};
   if(eightIn){
     if(ctx.isBreak) out.respot8=true;
     else{
-      if(ctx.wasOnEight&&!foul){out.win=p; out.why='8-р бөмбөгийг оруулж тоглолтыг дуусгалаа.';}
-      else{out.win=1-p; out.why=foul?`8-р бөмбөг орох үед алдаа гарсан (${foul}).`:'8-р бөмбөг цагаасаа өмнө орсон.';}
+      const called=ctx.cp==null||ctx.cp<0||(rec.where&&rec.where[8]===ctx.cp);
+      if(ctx.wasOnEight&&!foul&&called){out.win=p; out.why='8-р бөмбөгийг оруулж тоглолтыг дуусгалаа.';}
+      else{out.win=1-p; out.why=foul?`8-р бөмбөг орох үед алдаа гарсан (${foul}).`
+        :(!ctx.wasOnEight?'8-р бөмбөг цагаасаа өмнө орсон.':'8-р бөмбөг зарласан нүхэнд ороогүй.');}
       return out;
     }
   }
@@ -448,7 +485,7 @@ function judge(ctx,rec){
 
 /* ================= game state ================= */
 const G={mode:'ai2',cur:0,groups:[null,null],isBreak:true,phase:'aim',bih:'kitchen',aim:0,power:0,
-  spin:{x:0,y:0},wins:[0,0],winner:null,ctx:null,strike:null,charging:null,chargeT0:0,speed:1};
+  spin:{x:0,y:0},wins:[0,0],winner:null,ctx:null,strike:null,charging:null,chargeT0:0,speed:1,callPk:-1,turnT0:0};
 let S={balls:rack(),shot:newShot()};
 let aiToken=0;
 const names=()=>G.mode==='online'?[netName(0),netName(1)]:['Тоглогч 1',G.mode==='pvp'?'Тоглогч 2':'Компьютер'];
@@ -492,18 +529,31 @@ function newGame(){
   if(G.mode==='online'){ if(NET.game) netNewGame(NET.gen+1); return; }
   S={balls:rack(),shot:newShot()};
   Object.assign(G,{cur:0,groups:[null,null],isBreak:true,phase:'aim',bih:'kitchen',power:0,spin:{x:0,y:0},winner:null,strike:null,charging:null});
-  anims.length=0;
+  anims.length=0; tray.length=0; inTurnPrev=false;
   autoAim(); updateSpinUI(); hideOverlay();
   setMsg(`${names()[0]} эхэлж цохино. Цагаан бөмбөгийг зураасны ард чирж байрлуулж болно.`);
   updateHUD();
 }
-function shotCtx(){return {p:G.cur,groups:G.groups.slice(),isBreak:G.isBreak,wasOnEight:onEight(S,G.groups,G.cur)};}
-function shoot(){
+function shotCtx(){return {p:G.cur,groups:G.groups.slice(),isBreak:G.isBreak,wasOnEight:onEight(S,G.groups,G.cur),cp:-1,timeout:false};}
+/* shooting at the 8: the pocket must be called (tap a pocket; otherwise the one the aim line points to) */
+const needCall=()=>!G.isBreak&&onEight(S,G.groups,G.cur);
+function autoPocket(){
+  const c=S.balls[0]; if(!c.on) return -1;
+  const r=castGuide(c.x,c.y,Math.cos(G.aim),Math.sin(G.aim));
+  if(!r.hit||r.hit.id!==8) return -1;
+  const b=r.hit, nx=(b.x-r.gx)/(2*R), ny=(b.y-r.gy)/(2*R);
+  let best=-1,bd=0.5;
+  POCKETS.forEach((p,k)=>{const dx=p.ax-b.x,dy=p.ay-b.y,d=Math.hypot(dx,dy)||1,cs=(dx*nx+dy*ny)/d; if(cs>bd){bd=cs;best=k;}});
+  return best;
+}
+const calledPocket=()=>needCall()?(G.callPk>=0?G.callPk:autoPocket()):-1;
+function shoot(timeout){
   if(!(G.phase==='aim'||G.phase==='ai')) return;
   if(!S.balls[0].on) return;
-  G.ctx=shotCtx();
-  G.strike={t0:performance.now(),angle:G.aim,power:G.power,sx:G.spin.x,sy:G.spin.y};
-  G.phase='strike'; G.charging=null;
+  G.ctx=shotCtx(); G.ctx.cp=calledPocket(); G.ctx.timeout=!!timeout;
+  G.strike={t0:performance.now()-(timeout?STRIKE_MS:0),angle:G.aim,power:timeout?0:G.power,
+    sx:timeout?0:G.spin.x,sy:timeout?0:G.spin.y,timeout:!!timeout,cp:G.ctx.cp};
+  G.phase='strike'; G.charging=null; inTurnPrev=false;
   updateHUD();
 }
 function doStrike(){
@@ -514,7 +564,7 @@ function doStrike(){
   }else if(G.mode==='online'){
     netOwnShot(s);
   }else applyShot(S,s.angle,s.power,s.sx,s.sy);
-  sfx('cue',s.power);
+  if(!s.timeout) sfx('cue',s.power);
   G.power=0; G.bih=null; G.phase='moving'; acc=0;
   updateHUD();
 }
@@ -603,7 +653,7 @@ function evalCand(c,ctx){
   if(c.pos){const q=S2.balls[0]; q.x=c.pos.x; q.y=c.pos.y; q.on=true; q.vx=q.vy=0;}
   applyShot(S2,c.angle,c.power,0,c.sy||0);
   for(let n=0;n<4800&&advance(S2,FIX,null);n++);
-  return aiScore(S2,ctx);
+  return aiScore(S2,ctx.wasOnEight?{...ctx,cp:c.cp==null?-1:c.cp}:ctx);
 }
 function buildCandidates(){
   const grp=G.groups[G.cur], ids=legalIds(S,grp), cue=S.balls[0], cands=[];
@@ -634,14 +684,14 @@ function buildCandidates(){
     if(opts.length) positions=opts.slice(0,8);
   }
   const pairs=[];
-  for(const pos of positions) for(const id of ids) for(const p of POCKETS){
-    const e=shotEase(S,pos.x,pos.y,S.balls[id],p); if(e) pairs.push({pos,e});
+  for(const pos of positions) for(const id of ids) for(let k=0;k<6;k++){
+    const e=shotEase(S,pos.x,pos.y,S.balls[id],POCKETS[k]); if(e) pairs.push({pos,e,k});
   }
   pairs.sort((a,b)=>b.e.ease-a.e.ease);
   pairs.slice(0,14).forEach((pr,k)=>{
     const pos=pr.pos.fixed?null:pr.pos;
-    for(const pw of [0.3,0.45,0.62,0.85]) cands.push({pos,angle:pr.e.angle,power:pw,sy:0});
-    if(k<6){cands.push({pos,angle:pr.e.angle,power:0.5,sy:-0.7}); cands.push({pos,angle:pr.e.angle,power:0.5,sy:0.6});}
+    for(const pw of [0.3,0.45,0.62,0.85]) cands.push({pos,angle:pr.e.angle,power:pw,sy:0,cp:pr.k});
+    if(k<6){cands.push({pos,angle:pr.e.angle,power:0.5,sy:-0.7,cp:pr.k}); cands.push({pos,angle:pr.e.angle,power:0.5,sy:0.6,cp:pr.k});}
   });
   for(const pos of positions.slice(0,2)) for(const id of ids){
     const b=S.balls[id], a=Math.atan2(b.y-pos.y,b.x-pos.x);
@@ -675,6 +725,7 @@ function executeAI(c,L,tok){
   const target=c.angle+gauss()*L.noise*Math.PI/180;
   const power=clamp(c.power*(1+gauss()*L.pnoise),0.05,1);
   G.spin={x:0,y:c.sy||0}; updateSpinUI();
+  G.callPk=c.cp==null?-1:c.cp;
   setMsg('Компьютер онилж байна…');
   const a0=G.aim, d=angDiff(target,a0), t0=performance.now(), dur=380+Math.min(600,Math.abs(d)*500);
   const turn=()=>{
@@ -739,7 +790,8 @@ function validSnap(s){
 function validShot(sh){
   return !!sh&&typeof sh==='object'&&Number.isInteger(sh.g)&&Number.isInteger(sh.q)&&sh.q>=1&&validSnap(sh.pre)
     &&sh.pre.g===sh.g&&sh.pre.q===sh.q-1&&sh.pre.b[0]!==0&&sh.pre.win===-1
-    &&[sh.vx,sh.vy,sh.sx,sh.sl,sh.a,sh.p].every(isNum)&&Math.hypot(sh.vx,sh.vy)<=MAXV+1&&Math.abs(sh.sl)<=MAXV*2&&Math.abs(sh.sx)<=1.01;
+    &&[sh.vx,sh.vy,sh.sx,sh.sl,sh.a,sh.p].every(isNum)&&Math.hypot(sh.vx,sh.vy)<=MAXV+1&&Math.abs(sh.sl)<=MAXV*2&&Math.abs(sh.sx)<=1.01
+    &&(sh.cp===undefined||(Number.isInteger(sh.cp)&&sh.cp>=-1&&sh.cp<6))&&(sh.to===undefined||sh.to===0||sh.to===1);
 }
 function netRound(){for(const b of S.balls) if(b.on){b.x=r3(b.x); b.y=r3(b.y);}}
 function netLoad(st){
@@ -764,6 +816,7 @@ function netTurnMsg(prefix){
 function netPublish(){netPres({v:1,name:NET.name||null,seat:NET.seat,st:netSnap()});}
 function netAdopt(st,by){
   const newGen=st.g!==NET.gen, joining=NET.gen<0;
+  inTurnPrev=false;
   netLoad(st);
   NET.authSeat=by;
   G.strike=null; G.charging=null; G.power=0; G.spin={x:0,y:0}; updateSpinUI();
@@ -778,7 +831,7 @@ function netAdopt(st,by){
 function netNewGame(gen){
   S={balls:rack(),shot:newShot()}; netRound();
   Object.assign(G,{cur:gen%2,groups:[null,null],isBreak:true,phase:'aim',bih:'kitchen',power:0,spin:{x:0,y:0},winner:null,strike:null,charging:null});
-  NET.gen=gen; NET.seq=0; NET.played=''; NET.authSeat=NET.seat; anims.length=0;
+  NET.gen=gen; NET.seq=0; NET.played=''; NET.authSeat=NET.seat; anims.length=0; tray.length=0; inTurnPrev=false;
   autoAim(); updateSpinUI(); if(!olOpen) hideOverlay(); netTurnMsg('Шинэ тоглоом. '); updateHUD(); netPublish();
 }
 function netOwnShot(s){
@@ -787,7 +840,7 @@ function netOwnShot(s){
   applyShot(S,s.angle,s.power,s.sx,s.sy);
   const c=S.balls[0]; c.vx=r4(c.vx); c.vy=r4(c.vy); c.sx=r4(c.sx); c.slip=r4(c.slip);
   NET.curSeq=NET.seq+1; NET.remoteBy=-1; NET.played=NET.gen+':'+NET.curSeq;
-  netPres({sh:{g:NET.gen,q:NET.curSeq,pre,vx:c.vx,vy:c.vy,sx:c.sx,sl:c.slip,a:r4(s.angle),p:r4(s.power)},live:null});
+  netPres({sh:{g:NET.gen,q:NET.curSeq,pre,vx:c.vx,vy:c.vy,sx:c.sx,sl:c.slip,a:r4(s.angle),p:r4(s.power),cp:s.cp==null?-1:s.cp,to:s.timeout?1:0},live:null});
   NET.liveK='';
 }
 function netStartRemote(sh,by){
@@ -796,9 +849,10 @@ function netStartRemote(sh,by){
   netLoad(sh.pre);
   if(newGen&&!olOpen) hideOverlay();
   const pw=clamp(sh.p,0,1);
-  G.ctx=shotCtx(); G.aim=sh.a; G.power=pw; G.charging=null;
-  G.strike={t0:performance.now(),angle:sh.a,power:pw,sx:sh.sx,sy:0,remote:sh};
-  G.phase='strike'; updateHUD();
+  G.ctx=shotCtx(); G.ctx.cp=sh.cp==null?-1:sh.cp; G.ctx.timeout=sh.to===1;
+  G.aim=sh.a; G.power=pw; G.charging=null; G.callPk=G.ctx.cp;
+  G.strike={t0:performance.now()-(sh.to===1?STRIKE_MS:0),angle:sh.a,power:pw,sx:sh.sx,sy:0,remote:sh,timeout:sh.to===1,cp:G.ctx.cp};
+  G.phase='strike'; inTurnPrev=false; updateHUD();
 }
 function netAfterShot(){
   NET.seq=NET.curSeq; netRound();
@@ -926,14 +980,14 @@ function netTick(now){
   if(G.phase!=='aim') return;
   if(G.cur===NET.seat){
     if(now-NET.liveT>70){
-      const c=S.balls[0], live={a:r4(G.aim),p:r3(G.power),c:G.bih?[r3(c.x),r3(c.y)]:0,s:[r3(G.spin.x),r3(G.spin.y)]};
+      const c=S.balls[0], live={a:r4(G.aim),p:r3(G.power),c:G.bih?[r3(c.x),r3(c.y)]:0,s:[r3(G.spin.x),r3(G.spin.y)],k:G.callPk};
       const k=JSON.stringify(live);
       if(k!==NET.liveK){NET.liveK=k; NET.liveT=now; netPres({live});}
     }
   }else{
     const p=netPeerSeat(G.cur), L=p&&p.presence.live;
     if(L&&typeof L==='object'&&isNum(L.a)&&isNum(L.p)){
-      G.aim=L.a; G.power=clamp(L.p,0,1);
+      G.aim=L.a; G.power=clamp(L.p,0,1); if(Number.isInteger(L.k)&&L.k>=-1&&L.k<6) G.callPk=L.k;
       const c=S.balls[0];
       if(G.bih&&Array.isArray(L.c)&&isNum(L.c[0])&&isNum(L.c[1])){c.x=clamp(L.c[0],R,W-R); c.y=clamp(L.c[1],R,H-R);}
       if(Array.isArray(L.s)&&isNum(L.s[0])&&isNum(L.s[1])&&(L.s[0]!==G.spin.x||L.s[1]!==G.spin.y)){
@@ -1120,11 +1174,28 @@ function blip(f,d,v,type){
     o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+d+0.03);
   }catch(e){}
 }
+let NOISE=null;
+function noise(dur,vol,freq,q,delay){
+  if(!AC||muted) return;
+  try{
+    if(!NOISE){const n=Math.floor(AC.sampleRate*0.6); NOISE=AC.createBuffer(1,n,AC.sampleRate); const d=NOISE.getChannelData(0); for(let i=0;i<n;i++) d[i]=Math.random()*2-1;}
+    const t=AC.currentTime+(delay||0), src=AC.createBufferSource(), f=AC.createBiquadFilter(), g=AC.createGain();
+    src.buffer=NOISE; f.type='bandpass'; f.frequency.value=freq; f.Q.value=q;
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+Math.min(0.01,dur/4)); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    src.connect(f); f.connect(g); g.connect(AC.destination); src.start(t,Math.random()*0.3,dur+0.05);
+  }catch(e){}
+}
 function sfx(kind,v){
   const now=performance.now(); if(now-(lastSnd[kind]||0)<28) return; lastSnd[kind]=now;
   if(kind==='ball'){const a=Math.min(1,v/1400); blip(2600+Math.random()*500,0.045,0.5*a,'sine'); blip(1300,0.03,0.22*a,'triangle');}
   else if(kind==='rail'){blip(170,0.11,0.45*Math.min(1,v/1600),'sine');}
-  else if(kind==='pocket'){blip(140,0.22,0.5,'triangle'); blip(85,0.3,0.4,'sine');}
+  else if(kind==='pocket'){ // drop onto the leather, then a short rattle in the net
+    blip(125,0.2,0.55,'sine'); blip(70,0.32,0.4,'sine'); noise(0.07,0.32,700,1.2);
+    noise(0.035,0.12,2300,5,0.075); noise(0.03,0.08,1900,5,0.13); noise(0.025,0.05,2600,6,0.18);
+  }
+  else if(kind==='roll'){noise(0.5,0.05,380,0.9);}
+  else if(kind==='tray'){blip(1700,0.035,0.18,'triangle'); noise(0.04,0.08,3000,4);}
+  else if(kind==='clock'){blip(1250,0.06,0.16,'square');}
   else if(kind==='cue'){blip(950,0.05,0.2+0.4*v,'triangle');}
   else if(kind==='tick'){blip(2400,0.012,0.045,'square');}
 }
@@ -1135,7 +1206,12 @@ function playEvents(){
   if(bb>20) sfx('ball',bb);
   if(br>30) sfx('rail',br);
   const now=performance.now();
-  for(const s of EV.sinks){sfx('pocket'); anims.push({...s,t0:now});}
+  for(const s of EV.sinks){
+    sfx('pocket');
+    anims.push({type:'drop',id:s.id,x:s.x,y:s.y,pk:s.pk,t0:now});
+    anims.push({type:'ring',pk:s.pk,t0:now});
+    if(s.id!==0) trayAdd(s.id,now+DROP_MS+280);
+  }
   if(EV.sinks.length) updateHUD();
   EV.snd.length=0; EV.sinks.length=0;
 }
@@ -1161,10 +1237,10 @@ function layout(){
   const r=stage.getBoundingClientRect();
   dpr=Math.min(2.5,window.devicePixelRatio||1);
   cv.width=Math.max(1,Math.round(r.width*dpr)); cv.height=Math.max(1,Math.round(r.height*dpr));
-  const TW=W+2*RAIL,TH=H+2*RAIL, lw=portrait?TH:TW, lh=portrait?TW:TH;
+  const XMIN=-RAIL-TRAY,XMAX=W+RAIL,YMIN=-RAIL,YMAX=H+RAIL, TW=XMAX-XMIN,TH=YMAX-YMIN, lw=portrait?TH:TW, lh=portrait?TW:TH;
   const s=Math.max(0.01,Math.min(r.width/lw,r.height/lh)); scale=s;
   const ox=(r.width-lw*s)/2, oy=(r.height-lh*s)/2;
-  M=portrait?[0,-s,s,0,ox+s*RAIL,oy+s*(TW-RAIL)]:[s,0,0,s,ox+s*RAIL,oy+s*RAIL];
+  M=portrait?[0,-s,s,0,ox-s*YMIN,oy+s*XMAX]:[s,0,0,s,ox-s*XMIN,oy-s*YMIN];
   buildTable(); buildSprites();
   if(wasP!==portrait) lastPow=-1;
 }
@@ -1226,6 +1302,18 @@ function buildTable(){
   g.restore();
   rrect(g,OX+1,OY+1,OW-2,OH-2,ORR-1); g.strokeStyle='rgba(255,255,255,.2)'; g.lineWidth=1.4; g.stroke();
   rrect(g,OX+5,OY+5,OW-10,OH-10,ORR-5); g.strokeStyle='rgba(0,0,0,.55)'; g.lineWidth=1.5; g.stroke();
+  // ---- ball-return tube (potted balls roll in here) ----
+  {
+    const tw=2*R+10, x0=TUBE_X-tw/2;
+    g.save(); g.shadowColor='rgba(0,0,0,.5)'; g.shadowBlur=10*scale*dpr; g.shadowOffsetY=4*scale*dpr;
+    rrect(g,x0,TUBE_Y0,tw,TUBE_Y1-TUBE_Y0,tw/2); g.fillStyle='#0b0d0c'; g.fill(); g.restore();
+    const tg=g.createLinearGradient(x0,0,x0+tw,0);
+    tg.addColorStop(0,'#252b28'); tg.addColorStop(.25,'#0f1311'); tg.addColorStop(.7,'#070908'); tg.addColorStop(1,'#1d221f');
+    rrect(g,x0,TUBE_Y0,tw,TUBE_Y1-TUBE_Y0,tw/2); g.fillStyle=tg; g.fill();
+    g.strokeStyle='rgba(255,255,255,.13)'; g.lineWidth=1.2; g.stroke();
+    g.beginPath(); g.moveTo(x0+tw*0.24,TUBE_Y0+tw*0.6); g.lineTo(x0+tw*0.24,TUBE_Y1-tw*0.6);
+    g.strokeStyle='rgba(255,255,255,.07)'; g.lineWidth=2.5; g.stroke();
+  }
   // ---- pocket plates (leather/iron around each hole) ----
   const holes=holeShapes();
   g.save(); rrect(g,OX+2,OY+2,OW-4,OH-4,ORR-2); g.clip();
@@ -1367,6 +1455,13 @@ function drawCue(g,back,ang){
   g.beginPath(); g.moveTo(x0,-w0*0.45); g.lineTo(x1,-w1*0.45); g.stroke();
   g.restore();
 }
+/* ---- ball-return tray ---- */
+const tray=[];
+function trayAdd(id,at){ if(!tray.some(t=>t.id===id)) tray.push({id,at,st:0}); }
+function syncTray(){
+  for(let i=tray.length-1;i>=0;i--) if(S.balls[tray[i].id].on) tray.splice(i,1);
+  for(let id=1;id<16;id++) if(!S.balls[id].on&&!tray.some(t=>t.id===id)) tray.push({id,at:0,st:2});
+}
 function render(now){
   const g=g2;
   g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,cv.width,cv.height);
@@ -1385,17 +1480,63 @@ function render(now){
     g.strokeStyle=`rgba(255,255,255,${0.3+0.4*pulse})`; g.lineWidth=1.5*px; g.setLineDash([4*px,4*px]);
     g.beginPath(); g.arc(cue.x,cue.y,R*2,0,TAU); g.stroke(); g.setLineDash([]);
   }
+  if(aiming&&needCall()){ // shooting at the 8: show the pockets, the called one in gold
+    const k=calledPocket(), pulse=0.5+0.5*Math.sin(now/200);
+    POCKETS.forEach((pk,i)=>{
+      g.beginPath(); g.arc(pk.x,pk.y,pk.r+7,0,TAU);
+      if(i===k){g.strokeStyle=`rgba(232,184,79,${0.55+0.45*pulse})`; g.lineWidth=3.2*px+1.5; g.stroke();}
+      else{g.strokeStyle='rgba(255,255,255,.22)'; g.lineWidth=1.3*px; g.setLineDash([4*px,4*px]); g.stroke(); g.setLineDash([]);}
+    });
+  }
   if(aiming) drawGuide(g,px);
   g.setTransform(1,0,0,1,0,0);
   const rr=R*scale*dpr;
+  // potted balls resting in / rolling down the return tube
+  const yTop=TUBE_Y0+R+5;
+  tray.forEach((t,i)=>{
+    const slot=TUBE_Y1-R-5-i*(2*R+0.6); let y=slot;
+    if(t.st<2){
+      if(now<t.at) return;
+      if(t.st===0){t.st=1; sfx('roll');}
+      const k=Math.min(1,(now-t.at)/ROLL_MS); y=yTop+(slot-yTop)*k*k;
+      if(k>=1){t.st=2; t.land=now; sfx('tray');}
+    }
+    if(t.land&&now-t.land<200) y-=Math.sin((now-t.land)/200*Math.PI)*3.5;
+    const [X,Y]=scr(TUBE_X,y), sp=sprites[t.id]; g.drawImage(sp,X-sp.width/2,Y-sp.height/2);
+  });
   g.fillStyle='rgba(0,0,0,.34)';
   for(const b of S.balls){if(!b.on) continue; const [X,Y]=scr(b.x,b.y); g.beginPath(); g.arc(X+rr*0.16,Y+rr*0.26,rr*0.98,0,TAU); g.fill();}
   for(const b of S.balls){if(!b.on) continue; const [X,Y]=scr(b.x,b.y),sp=sprites[b.id]; g.drawImage(sp,X-sp.width/2,Y-sp.height/2);}
   for(let i=anims.length-1;i>=0;i--){
-    const a=anims[i],k=(now-a.t0)/240;
-    if(k>=1){anims.splice(i,1);continue;}
-    const [X,Y]=scr(a.x+(a.px-a.x)*k,a.y+(a.py-a.y)*k),sp=sprites[a.id],sc=1-0.55*k;
-    g.globalAlpha=1-k*0.9; g.drawImage(sp,X-sp.width*sc/2,Y-sp.height*sc/2,sp.width*sc,sp.height*sc); g.globalAlpha=1;
+    const a=anims[i], pk=POCKETS[a.pk];
+    if(!pk){anims.splice(i,1); continue;}
+    const [HX,HY]=scr(pk.x,pk.y), hr=(pk.r+1)*scale*dpr;
+    if(a.type==='ring'){ // flash around the pocket
+      const k=(now-a.t0)/420; if(k>=1){anims.splice(i,1); continue;}
+      g.strokeStyle=`rgba(255,255,255,${0.6*(1-k)})`; g.lineWidth=1+2.4*scale*dpr*(1-k);
+      g.beginPath(); g.arc(HX,HY,hr+k*16*scale*dpr,0,TAU); g.stroke(); continue;
+    }
+    // the ball slips under the rim, shrinking and going dark as it drops
+    const k=(now-a.t0)/DROP_MS; if(k>=1){anims.splice(i,1); continue;}
+    const e=1-(1-k)*(1-k), sc=1-0.42*e, sp=sprites[a.id];
+    const [X,Y]=scr(a.x+(pk.x-a.x)*e*0.85,a.y+(pk.y-a.y)*e*0.85);
+    g.save(); g.beginPath(); g.arc(HX,HY,hr+(1-e)*rr*2.4,0,TAU); g.clip();
+    g.drawImage(sp,X-sp.width*sc/2,Y-sp.height*sc/2,sp.width*sc,sp.height*sc);
+    g.fillStyle=`rgba(0,0,0,${0.86*e})`; g.beginPath(); g.arc(X,Y,rr*sc+0.5,0,TAU); g.fill();
+    g.restore();
+  }
+  if(aiming&&needCall()){ // little 8 next to the called pocket
+    const k=calledPocket();
+    if(k>=0){
+      const pk=POCKETS[k], dx=pk.x-W/2, dy=pk.y-H/2, d=Math.hypot(dx,dy)||1, off=pk.r+19;
+      const [X,Y]=scr(pk.x+dx/d*off*0.75+(pk.side?0:0),pk.y+dy/d*off), sp=sprites[8], sc=0.8;
+      g.drawImage(sp,X-sp.width*sc/2,Y-sp.height*sc/2,sp.width*sc,sp.height*sc);
+    }
+  }
+  if(G.bih&&aiming){ // ball in hand
+    const [X,Y]=scr(cue.x,cue.y);
+    g.font=`${Math.round(rr*1.8)}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
+    g.textAlign='center'; g.textBaseline='middle'; g.globalAlpha=0.92; g.fillText('✋',X+rr*2,Y-rr*2); g.globalAlpha=1;
   }
   if(showCue){
     setT(g);
@@ -1405,6 +1546,28 @@ function render(now){
       back=R+1+(b0-R-1)*(1-k*k); ang=G.strike.angle;
     }
     drawCue(g,back,ang);
+  }
+}
+
+/* ================= shot clock (30 s, like mobile pool) ================= */
+let inTurnPrev=false, lastClockSec=-1;
+const localHumanTurn=()=>G.mode==='online'?(NET.seat===G.cur&&!!netOpp()&&NET.connected):!isAI(G.cur);
+const clockPaused=()=>(overlay.classList.contains('show')&&!spinOpen)||(G.mode==='online'&&(!NET.game||!netOpp()));
+function shotClock(now,dt){
+  const inTurn=G.phase==='aim'||G.phase==='ai';
+  if(inTurn&&!inTurnPrev){
+    G.turnT0=now; G.callPk=-1; lastClockSec=-1;
+    if(G.phase==='aim'&&needCall()&&localHumanTurn()) setMsg(msgEl.textContent+' · 8-р бөмбөгийг оруулах нүхээ товшиж зарлана уу.',msgEl.className);
+  }
+  inTurnPrev=inTurn;
+  if(!inTurn){setRings(-1,0); return;}
+  if(clockPaused()) G.turnT0+=dt*1000;
+  const left=SHOT_SEC-(now-G.turnT0)/1000;
+  setRings(G.cur,clamp(left/SHOT_SEC,0,1));
+  if(G.phase==='aim'&&localHumanTurn()&&!clockPaused()){
+    const sec=Math.ceil(left);
+    if(sec<=5&&sec>0&&sec!==lastClockSec){lastClockSec=sec; sfx('clock');}
+    if(left<=0){drag=null; G.charging=null; spinDrag=false; shoot(true);}
   }
 }
 
@@ -1427,6 +1590,7 @@ function frame(now){
   }
   if(G.charging==='key') G.power=Math.min(1,(now-G.chargeT0)/1400);
   if(G.mode==='online') netTick(now);
+  shotClock(now,dt);
   updatePowerUI();
   render(now);
   requestAnimationFrame(frame);
@@ -1447,16 +1611,31 @@ function updateHUD(){
     const card=$('#p'+p), grp=G.groups[p];
     card.classList.toggle('active',G.cur===p&&G.phase!=='over');
     card.querySelector('.pname').textContent=nm[p]+(G.mode==='online'&&NET.seat===p?' (та)':'');
-    card.querySelector('.pgroup').textContent=`${grp?GNAME[grp]:'Нээлттэй ширээ'} · ${G.wins[p]} хожил`;
+    card.querySelector('.ini').textContent=(G.mode.startsWith('ai')&&p===1)?'🤖':((nm[p].trim()[0]||'?').toUpperCase());
+    card.querySelector('.pwin').textContent=G.wins[p]?`🏆 ${G.wins[p]}`:'';
+    card.title=grp?GNAME[grp]:'Нээлттэй ширээ';
+    // seven slots like mobile pool: a ball while it is on the table, an empty slot once potted
     let html='';
     if(grp){
-      const ids=[]; for(let i=1;i<16;i++) if(i!==8&&groupOf(i)===grp&&S.balls[i].on) ids.push(i);
-      html=ids.length?ids.map(miniBall).join(''):(S.balls[8].on?miniBall(8):'');
-    }
+      const ids=grp==='solid'?[1,2,3,4,5,6,7]:[9,10,11,12,13,14,15];
+      const left=ids.filter(i=>S.balls[i].on).length;
+      html=ids.map(i=>S.balls[i].on?miniBall(i):'<span class="mini slot"></span>').join('');
+      if(!left&&S.balls[8].on) html=miniBall(8).replace('class="mini"','class="mini eight"')+html;
+    }else html='<span class="mini slot"></span>'.repeat(7);
     card.querySelector('.pballs').innerHTML=html;
   }
   side.classList.toggle('disabled',!canHumanShoot());
+  syncTray();
   netBar();
+}
+let ringK='';
+function setRings(cur,frac){
+  const k=cur+':'+(frac*200|0); if(k===ringK) return; ringK=k;
+  for(let p=0;p<2;p++){
+    const card=document.getElementById('p'+p);
+    card.querySelector('.prg').style.strokeDashoffset=p===cur?(125.66*(1-frac)).toFixed(1):'125.66';
+    card.querySelector('.ava').classList.toggle('warn',p===cur&&frac<5/SHOT_SEC);
+  }
 }
 let lastPow=-1;
 function updatePowerUI(){
@@ -1469,7 +1648,8 @@ function updateSpinUI(){
   spinDot.style.left=(50+G.spin.x*40)+'%';
   spinDot.style.top=(50-G.spin.y*40)+'%';
 }
-function hideOverlay(){overlay.classList.remove('show'); olOpen=false;}
+let spinOpen=false;
+function hideOverlay(){overlay.classList.remove('show'); olOpen=false; spinOpen=false;}
 function showHelp(){
   ovCard.className='card';
   ovCard.innerHTML=`<h2>Хэрхэн тоглох вэ? (8 бөмбөг)</h2><ul>
@@ -1479,7 +1659,8 @@ function showHelp(){
     <li><b>Цохих:</b> «Хүч» самбарыг татаад (доош эсвэл баруун тийш) суллана. Компьютер дээр Space товчийг дарж барьж байгаад суллаж болно.</li>
     <li><b>Эргэлт:</b> жижиг цагаан бөмбөг дээрх улаан цэгийг дээш тавибал урагшилна, доош тавибал буцаж ухарна, хажуу тийш тавибал хажуугийн эргэлт өгнө. Давхар дарвал цэвэрлэнэ.</li>
     <li><b>Алдаа:</b> цагаан бөмбөг нүхэнд орох, юу ч мөргөхгүй байх, эхлээд өрсөлдөгчийн бөмбөгийг мөргөх. Алдаа гарвал өрсөлдөгч цагаан бөмбөгийг хүссэн газраа тавина (тасархай дугуйг чирнэ).</li>
-    <li><b>8-р бөмбөг:</b> цагаасаа өмнө оруулах эсвэл оруулахдаа алдаа гаргавал хожигдоно.</li>
+    <li><b>8-р бөмбөг:</b> оруулахын өмнө нүхээ товшиж зарлана (товшихгүй бол онилгын чиглэлийн нүх алтан хүрээгээр тэмдэглэгдэнэ). Цагаасаа өмнө, буруу нүхэнд оруулах эсвэл оруулахдаа алдаа гаргавал хожигдоно.</li>
+    <li><b>Цаг:</b> цохилт бүрт 30 секунд — тоглогчийн зургийн эргэн тойрон дахь цагираг багасна. Хугацаа дуусвал алдаа болж, өрсөлдөгч цагаан бөмбөгийг хүссэн газраа тавина.</li>
   </ul><div class="row"><button class="btn primary" id="ovOk">Ойлголоо</button></div>`;
   overlay.classList.add('show');
   $('#ovOk').onclick=()=>{audio(); hideOverlay();};
@@ -1520,6 +1701,10 @@ function aimAtTap(p){
 cv.addEventListener('pointerdown',e=>{
   if(!canHumanShoot()) return;
   audio(); const p=toTable(e), c=S.balls[0], touch=e.pointerType!=='mouse';
+  if(needCall()){
+    const k=POCKETS.findIndex(pk=>Math.hypot(p.x-pk.x,p.y-pk.y)<pk.r+(touch?24:14));
+    if(k>=0){G.callPk=k; sfx('tick'); e.preventDefault(); return;}
+  }
   if(G.bih&&Math.hypot(p.x-c.x,p.y-c.y)<R*(touch?4.2:2.6)){drag={mode:'ball'}; cv.style.cursor='grabbing';}
   else if(touch){drag={mode:'rot',id:e.pointerId,sx:e.clientX,sy:e.clientY,moved:false,f:Math.atan2(p.y-c.y,p.x-c.x),p};}
   else{drag={mode:'aim'}; setAimTo(p);}
@@ -1601,7 +1786,29 @@ function setSpinFrom(e){
   G.spin={x,y:-y}; updateSpinUI();
 }
 let spinDrag=false;
-spinEl.addEventListener('pointerdown',e=>{if(!canHumanShoot())return; spinDrag=true; try{spinEl.setPointerCapture(e.pointerId);}catch(_){} setSpinFrom(e); e.preventDefault();});
+function openSpinPicker(){
+  spinOpen=true; ovCard.className='card spincard';
+  ovCard.innerHTML=`<h2>Эргэлт</h2><div id="bigSpin"><div id="bigDot"></div></div>
+    <p class="note">Цохих цэгээ чирж сонго: дээр — урагшилна, доор — ухарна, хажуу — хажуугийн эргэлт.</p>
+    <div class="row" style="justify-content:center"><button class="btn" id="spReset">Цэвэрлэх</button><button class="btn primary" id="spOk">Болсон</button></div>`;
+  overlay.classList.add('show');
+  const big=$('#bigSpin'), dot=$('#bigDot');
+  const show=()=>{dot.style.left=(50+G.spin.x*42)+'%'; dot.style.top=(50-G.spin.y*42)+'%';};
+  const set=e=>{
+    const r=big.getBoundingClientRect();
+    let x=(e.clientX-(r.left+r.width/2))/(r.width/2), y=(e.clientY-(r.top+r.height/2))/(r.height/2);
+    const m=Math.hypot(x,y); if(m>1){x/=m;y/=m;}
+    G.spin={x,y:-y}; updateSpinUI(); show();
+  };
+  let on=false;
+  big.addEventListener('pointerdown',e=>{on=true; try{big.setPointerCapture(e.pointerId);}catch(_){} set(e); e.preventDefault();});
+  big.addEventListener('pointermove',e=>{if(on) set(e);});
+  big.addEventListener('pointerup',()=>{on=false;}); big.addEventListener('pointercancel',()=>{on=false;});
+  $('#spReset').onclick=()=>{G.spin={x:0,y:0}; updateSpinUI(); show();};
+  $('#spOk').onclick=hideOverlay;
+  show();
+}
+spinEl.addEventListener('pointerdown',e=>{if(!canHumanShoot())return; if(e.pointerType!=='mouse'){e.preventDefault(); openSpinPicker(); return;} spinDrag=true; try{spinEl.setPointerCapture(e.pointerId);}catch(_){} setSpinFrom(e); e.preventDefault();});
 spinEl.addEventListener('pointermove',e=>{if(spinDrag) setSpinFrom(e);});
 spinEl.addEventListener('pointerup',()=>{spinDrag=false;});
 spinEl.addEventListener('pointercancel',()=>{spinDrag=false;});
@@ -1685,7 +1892,8 @@ showHelp();
 requestAnimationFrame(t=>{last=t; frame(t);});
 
 /* testing hooks */
-window.__pool={G,NET,shoot,netSnap,get S(){return S;},toScreen:(x,y)=>[M[0]*x+M[2]*y+M[4],M[1]*x+M[3]*y+M[5]],showWin,newGame,judge,advance,endShot,buildCandidates,evalCand,applyShot,shotCtx,FIX,
+window.__anims=()=>anims.filter(a=>a.type==='drop').length; window.__trayIds=()=>tray.map(t=>t.id);
+window.__pool={G,NET,shoot,netSnap,updateHUD,get S(){return S;},toScreen:(x,y)=>[M[0]*x+M[2]*y+M[4],M[1]*x+M[3]*y+M[5]],showWin,newGame,judge,advance,endShot,buildCandidates,evalCand,applyShot,shotCtx,FIX,
   autoTurn(noise){
     const cands=buildCandidates(), ctx=shotCtx();
     for(const c of cands) c.score=evalCand(c,ctx);
@@ -1693,6 +1901,7 @@ window.__pool={G,NET,shoot,netSnap,get S(){return S;},toScreen:(x,y)=>[M[0]*x+M[
     const c=cands[0], L=noise?AI_LEVEL[noise]:null;
     if(c.pos&&G.bih){S.balls[0].x=c.pos.x; S.balls[0].y=c.pos.y;}
     const ang=c.angle+(L?gauss()*L.noise*Math.PI/180:0), pw=L?clamp(c.power*(1+gauss()*L.pnoise),0.05,1):c.power;
+    if(ctx.wasOnEight) ctx.cp=c.cp==null?-1:c.cp;
     G.ctx=ctx; applyShot(S,ang,pw,0,c.sy||0); G.bih=null; G.phase='moving';
     let n=0; while(n<4800&&advance(S,FIX,null)) n++;
     endShot();
