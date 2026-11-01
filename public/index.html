@@ -2,7 +2,12 @@
 <html lang="mn">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0c110f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Билльярд">
 <title>Билльярд — 8 бөмбөг</title>
 <style>
 :root{
@@ -13,7 +18,7 @@ html,body{height:100%}
 body{
   background:radial-gradient(1200px 700px at 50% -10%,#1b2a23 0%,var(--bg) 62%);
   color:var(--text);font:14px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;
-  overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;
+  overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;overscroll-behavior:none;
 }
 #app{
   height:100vh;height:100dvh;display:flex;flex-direction:column;gap:8px;
@@ -67,6 +72,29 @@ main{flex:1;min-height:0;display:flex;gap:10px}
 }
 #powerHint{position:absolute;inset:0;display:grid;place-items:center;font-size:20px;color:rgba(255,255,255,.35);pointer-events:none}
 #powerHint::after{content:"⇣"}
+#powerCue{
+  position:absolute;left:50%;top:5px;width:9px;height:calc(100% + 60px);border-radius:5px 5px 2px 2px;pointer-events:none;
+  transform:translate(-50%,calc(var(--p,0) * 78%));box-shadow:0 2px 6px rgba(0,0,0,.6);
+  background:linear-gradient(180deg,#3d6aa0 0 5px,#f3eee2 5px 14px,#ead3a6 14px,#d9b277 55%,#1d1d1d 55% 57%,#6b3416 57%,#2a1208)
+}
+.grp-spin,.grp-aim{flex:none}
+#wheel{
+  position:relative;width:46px;height:132px;border-radius:11px;overflow:hidden;touch-action:none;cursor:ns-resize;flex:none;
+  background:#141414;border:1px solid #333;box-shadow:0 3px 10px rgba(0,0,0,.55)
+}
+#wheelTex{
+  position:absolute;inset:0;
+  background-image:repeating-linear-gradient(180deg,#2e2e2e 0 3px,#0b0b0b 3px 4px,#454545 4px 5px,#1d1d1d 5px 10px)
+}
+#wheel::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(0,0,0,.92),rgba(0,0,0,.25) 28%,rgba(255,255,255,.08) 50%,rgba(0,0,0,.25) 72%,rgba(0,0,0,.92))
+}
+#wheel::before{
+  content:"";position:absolute;z-index:1;pointer-events:none;left:-1px;right:-1px;top:50%;height:2px;margin-top:-1px;
+  background:linear-gradient(90deg,var(--accent) 0 7px,transparent 7px calc(100% - 7px),var(--accent) calc(100% - 7px))
+}
+#wheel.active{border-color:var(--accent)}
 #spin{
   width:60px;height:60px;border-radius:50%;position:relative;touch-action:none;cursor:crosshair;flex:none;
   background:radial-gradient(circle at 35% 30%,#fff,#ebe7dc 55%,#b6b1a3);box-shadow:0 2px 10px rgba(0,0,0,.45)
@@ -86,6 +114,47 @@ body.portrait #power{flex:none;width:100%;height:46px;min-height:0;cursor:ew-res
 body.portrait #power::before{background:repeating-linear-gradient(90deg,transparent 0 9.5%,rgba(255,255,255,.07) 9.5% 10%)}
 body.portrait #powerFill{background:linear-gradient(90deg,#3fbf6e,#e8b84f 55%,#e5533d);clip-path:inset(0 100% 0 0)}
 body.portrait #powerHint::after{content:"⇢"}
+body.portrait #powerCue{left:5px;top:50%;width:calc(100% + 60px);height:9px;border-radius:5px 2px 2px 5px;
+  transform:translate(calc(var(--p,0) * 78%),-50%);
+  background:linear-gradient(90deg,#3d6aa0 0 5px,#f3eee2 5px 14px,#ead3a6 14px,#d9b277 55%,#1d1d1d 55% 57%,#6b3416 57%,#2a1208)}
+body.portrait .grp-aim .aimbtns{display:none}
+body.portrait #wheel{width:132px;height:46px;cursor:ew-resize}
+body.portrait #wheelTex{background-image:repeating-linear-gradient(90deg,#2e2e2e 0 3px,#0b0b0b 3px 4px,#454545 4px 5px,#1d1d1d 5px 10px)}
+body.portrait #wheel::after{background:linear-gradient(90deg,rgba(0,0,0,.92),rgba(0,0,0,.25) 28%,rgba(255,255,255,.08) 50%,rgba(0,0,0,.25) 72%,rgba(0,0,0,.92))}
+body.portrait #wheel::before{left:50%;right:auto;top:-1px;bottom:-1px;width:2px;height:auto;margin:0 0 0 -1px;
+  background:linear-gradient(180deg,var(--accent) 0 7px,transparent 7px calc(100% - 7px),var(--accent) calc(100% - 7px))}
+body.portrait #spin{width:52px;height:52px}
+/* phone held sideways: power on the left, spin + aim wheel on the right (like mobile pool games) */
+body.compact #app{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr);
+  grid-template-areas:"head players" "net net" "main main";gap:5px;
+  padding:calc(5px + env(safe-area-inset-top)) calc(8px + env(safe-area-inset-right)) calc(5px + env(safe-area-inset-bottom)) calc(8px + env(safe-area-inset-left))}
+body.compact header{grid-area:head}
+body.compact h1{display:none}
+body.compact .players{grid-area:players}
+body.compact .pcard{padding:3px 9px;gap:8px}
+body.compact .pname{font-size:13px}
+body.compact .pgroup{font-size:11px}
+body.compact .mini{width:12px;height:12px}
+body.compact #netbar{grid-area:net;min-height:18px;font-size:12px}
+body.compact #netbar .btn{height:22px}
+body.compact #msg{position:fixed;z-index:5;left:50%;bottom:calc(7px + env(safe-area-inset-bottom));transform:translateX(-50%);
+  max-width:min(70vw,560px);min-height:0;padding:3px 12px;border-radius:999px;font-size:12px;line-height:1.3;
+  background:rgba(8,12,10,.72);pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.compact #msg:empty{display:none}
+body.compact main{grid-area:main;display:grid;gap:8px;grid-template-columns:54px minmax(0,1fr) 62px;
+  grid-template-rows:auto minmax(0,1fr);grid-template-areas:"power stage spin" "power stage aim"}
+body.compact #stage{grid-area:stage}
+body.compact #side{display:contents}
+body.compact .grp-power{grid-area:power;height:100%;min-height:0}
+body.compact #power{width:50px;min-height:0}
+body.compact .grp-spin{grid-area:spin}
+body.compact .grp-aim{grid-area:aim;min-height:0}
+body.compact #spin{width:50px;height:50px}
+body.compact #wheel{flex:1;height:auto;min-height:70px;width:48px}
+body.compact .grp-aim .aimbtns{display:none}
+body.compact .lbl{font-size:10px}
+body.compact .grp-spin .lbl{display:none}
+body.compact #side.disabled .grp{opacity:.38}
 #overlay{position:fixed;inset:0;display:none;place-items:center;background:rgba(5,8,7,.64);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);z-index:10;padding:16px}
 #overlay.show{display:grid}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 22px;max-width:470px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.5);max-height:calc(100dvh - 32px);overflow:auto}
@@ -118,6 +187,7 @@ body.portrait #powerHint::after{content:"⇢"}
 .note{font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.45}
 .note b{color:var(--text)}
 .err{color:#ff9580;font-size:13px;margin-top:8px;min-height:1px}
+@media (max-width:420px){ h1{display:none} header select{margin-right:auto} }
 @media (max-width:560px){
   h1 span,.wide{display:none}
   .pcard{flex-direction:column;align-items:flex-start;gap:4px;padding:6px 9px}
@@ -149,6 +219,7 @@ body.portrait #powerHint::after{content:"⇢"}
     <button class="btn" id="newBtn" title="Шинэ тоглоом">⟲<span class="wide">&nbsp;Шинэ</span></button>
     <button class="btn icon" id="helpBtn" title="Тусламж">?</button>
     <button class="btn icon" id="muteBtn" title="Дуу">🔊</button>
+    <button class="btn icon" id="fsBtn" title="Бүтэн дэлгэц" hidden>⛶</button>
   </header>
   <div class="players">
     <div class="pcard" id="p0"><div class="pinfo"><div class="pname"></div><div class="pgroup"></div></div><div class="pballs"></div></div>
@@ -159,9 +230,9 @@ body.portrait #powerHint::after{content:"⇢"}
   <main>
     <div id="stage"><canvas id="cv"></canvas></div>
     <div id="side">
-      <div class="grp grp-power"><div class="lbl">Хүч</div><div id="power"><div id="powerFill"></div><div id="powerHint"></div></div></div>
-      <div class="grp"><div class="lbl">Эргэлт</div><div id="spin" title="Давхар дарвал цэвэрлэнэ"><div id="spinDot"></div></div></div>
-      <div class="grp"><div class="lbl">Онилох</div><div class="aimbtns"><button class="btn icon" id="rotL" title="Зүүн тийш эргүүлэх">↺</button><button class="btn icon" id="rotR" title="Баруун тийш эргүүлэх">↻</button></div></div>
+      <div class="grp grp-power"><div class="lbl">Хүч</div><div id="power"><div id="powerFill"></div><div id="powerHint"></div><div id="powerCue"></div></div></div>
+      <div class="grp grp-spin"><div class="lbl">Эргэлт</div><div id="spin" title="Давхар дарвал цэвэрлэнэ"><div id="spinDot"></div></div></div>
+      <div class="grp grp-aim"><div class="lbl">Онилох</div><div id="wheel" title="Гүйлгэж нарийн онилно"><div id="wheelTex"></div></div><div class="aimbtns"><button class="btn icon" id="rotL" title="Зүүн тийш эргүүлэх">↺</button><button class="btn icon" id="rotR" title="Баруун тийш эргүүлэх">↻</button></div></div>
     </div>
   </main>
 </div>
@@ -1055,6 +1126,7 @@ function sfx(kind,v){
   else if(kind==='rail'){blip(170,0.11,0.45*Math.min(1,v/1600),'sine');}
   else if(kind==='pocket'){blip(140,0.22,0.5,'triangle'); blip(85,0.3,0.4,'sine');}
   else if(kind==='cue'){blip(950,0.05,0.2+0.4*v,'triangle');}
+  else if(kind==='tick'){blip(2400,0.012,0.045,'square');}
 }
 const EV={snd:[],sinks:[]};
 function playEvents(){
@@ -1085,6 +1157,7 @@ function layout(){
   const wasP=portrait;
   portrait=innerHeight>innerWidth*1.1;
   document.body.classList.toggle('portrait',portrait);
+  document.body.classList.toggle('compact',!portrait&&innerHeight<=520);
   const r=stage.getBoundingClientRect();
   dpr=Math.min(2.5,window.devicePixelRatio||1);
   cv.width=Math.max(1,Math.round(r.width*dpr)); cv.height=Math.max(1,Math.round(r.height*dpr));
@@ -1388,6 +1461,7 @@ function updateHUD(){
 let lastPow=-1;
 function updatePowerUI(){
   if(G.power===lastPow) return; lastPow=G.power;
+  powerEl.style.setProperty('--p',G.power.toFixed(3));
   const rest=(100-G.power*100).toFixed(2)+'%';
   powerFill.style.clipPath=portrait?`inset(0 ${rest} 0 0)`:`inset(0 0 ${rest} 0)`;
 }
@@ -1400,7 +1474,8 @@ function showHelp(){
   ovCard.className='card';
   ovCard.innerHTML=`<h2>Хэрхэн тоглох вэ? (8 бөмбөг)</h2><ul>
     <li><b>Зорилго:</b> өөрийн 7 бөмбөгийг (бүтэн 1–7 эсвэл судалтай 9–15) оруулаад, хамгийн сүүлд 8-р бөмбөгийг оруулсан нь ялна.</li>
-    <li><b>Онилох:</b> ширээн дээр дарж эсвэл чирж чиглэлээ сонго. ↺ ↻ товч эсвэл гарын ← → сумаар нарийн тааруулна (Shift — том алхам).</li>
+    <li><b>Онилох:</b> утсан дээр ширээн дээгүүр хуруугаа гулсуулахад цохиур эргэнэ, бөмбөг дээр товшвол шууд тэр рүү онилно. Компьютер дээр ширээн дээр дарж/чирнэ.</li>
+    <li><b>Нарийн онилго:</b> «Онилох» дугуйг гүйлгэнэ (эсвэл ↺ ↻, гарын ← →; Shift — том алхам).</li>
     <li><b>Цохих:</b> «Хүч» самбарыг татаад (доош эсвэл баруун тийш) суллана. Компьютер дээр Space товчийг дарж барьж байгаад суллаж болно.</li>
     <li><b>Эргэлт:</b> жижиг цагаан бөмбөг дээрх улаан цэгийг дээш тавибал урагшилна, доош тавибал буцаж ухарна, хажуу тийш тавибал хажуугийн эргэлт өгнө. Давхар дарвал цэвэрлэнэ.</li>
     <li><b>Алдаа:</b> цагаан бөмбөг нүхэнд орох, юу ч мөргөхгүй байх, эхлээд өрсөлдөгчийн бөмбөгийг мөргөх. Алдаа гарвал өрсөлдөгч цагаан бөмбөгийг хүссэн газраа тавина (тасархай дугуйг чирнэ).</li>
@@ -1436,23 +1511,70 @@ function placeCue(x,y){
   if(validPos(x,y,kitchen,0)){c.x=x;c.y=y;}
 }
 function setAimTo(p){const c=S.balls[0]; if(Math.hypot(p.x-c.x,p.y-c.y)>3) G.aim=Math.atan2(p.y-c.y,p.x-c.x);}
+function aimAtTap(p){
+  // tapping on (or next to) a ball aims straight at it; elsewhere aims at the tapped point
+  let best=null,bd=(R*2.6)**2;
+  for(const b of S.balls){ if(!b.on||b.id===0) continue; const d=(b.x-p.x)**2+(b.y-p.y)**2; if(d<bd){bd=d;best=b;} }
+  setAimTo(best?{x:best.x,y:best.y}:p);
+}
 cv.addEventListener('pointerdown',e=>{
   if(!canHumanShoot()) return;
-  audio(); const p=toTable(e), c=S.balls[0];
-  if(G.bih&&Math.hypot(p.x-c.x,p.y-c.y)<R*2.6){drag='ball'; cv.style.cursor='grabbing';}
-  else{drag='aim'; setAimTo(p);}
+  audio(); const p=toTable(e), c=S.balls[0], touch=e.pointerType!=='mouse';
+  if(G.bih&&Math.hypot(p.x-c.x,p.y-c.y)<R*(touch?4.2:2.6)){drag={mode:'ball'}; cv.style.cursor='grabbing';}
+  else if(touch){drag={mode:'rot',id:e.pointerId,sx:e.clientX,sy:e.clientY,moved:false,f:Math.atan2(p.y-c.y,p.x-c.x),p};}
+  else{drag={mode:'aim'}; setAimTo(p);}
   try{cv.setPointerCapture(e.pointerId);}catch(_){}
   e.preventDefault();
 });
 cv.addEventListener('pointermove',e=>{
   const p=toTable(e);
-  if(drag==='ball'){placeCue(p.x,p.y); return;}
-  if(drag==='aim'){setAimTo(p); return;}
+  if(drag&&drag.mode==='ball'){placeCue(p.x,p.y); return;}
+  if(drag&&drag.mode==='aim'){setAimTo(p); return;}
+  if(drag&&drag.mode==='rot'){
+    if(!canHumanShoot()) return;
+    if(!drag.moved&&Math.hypot(e.clientX-drag.sx,e.clientY-drag.sy)>8) drag.moved=true;
+    const c=S.balls[0], f=Math.atan2(p.y-c.y,p.x-c.x);
+    // turn the cue by how far the finger turned around the cue ball (skip right next to it)
+    if(drag.moved&&Math.hypot(p.x-c.x,p.y-c.y)>R*2) G.aim+=angDiff(f,drag.f);
+    drag.f=f; return;
+  }
   const c=S.balls[0];
   cv.style.cursor=(G.bih&&canHumanShoot()&&Math.hypot(p.x-c.x,p.y-c.y)<R*2.6)?'grab':'crosshair';
 });
-const endDrag=()=>{drag=null; cv.style.cursor='crosshair';};
+const endDrag=e=>{
+  if(drag&&drag.mode==='rot'&&!drag.moved&&e.type==='pointerup'&&canHumanShoot()) aimAtTap(drag.p);
+  drag=null; cv.style.cursor='crosshair';
+};
 cv.addEventListener('pointerup',endDrag); cv.addEventListener('pointercancel',endDrag);
+for(const el of [cv,side]) el.addEventListener('contextmenu',e=>e.preventDefault());
+
+/* fine-aim wheel: drag along it to turn the cue a little at a time */
+const wheel=$('#wheel'), wheelTex=$('#wheelTex');
+let wDrag=null, wOff=0, wTick=0;
+const WHEEL_RAD_PER_PX=0.0008;
+const wheelPos=e=>portrait?e.clientX:e.clientY;
+wheel.addEventListener('pointerdown',e=>{
+  if(!canHumanShoot()) return;
+  audio(); wDrag={id:e.pointerId,p:wheelPos(e)}; wheel.classList.add('active');
+  try{wheel.setPointerCapture(e.pointerId);}catch(_){}
+  e.preventDefault();
+});
+wheel.addEventListener('pointermove',e=>{
+  if(!wDrag||wDrag.id!==e.pointerId) return;
+  const q=wheelPos(e), d=q-wDrag.p; wDrag.p=q;
+  if(!d||!canHumanShoot()) return;
+  G.aim+=d*WHEEL_RAD_PER_PX*(e.shiftKey?4:1);
+  wOff+=d; wheelTex.style.backgroundPosition=portrait?`${wOff}px 0`:`0 ${wOff}px`;
+  wTick+=Math.abs(d);
+  if(wTick>=10){wTick=0; sfx('tick'); try{navigator.vibrate&&navigator.vibrate(3);}catch(_){}}
+});
+const wEnd=e=>{if(wDrag&&wDrag.id===e.pointerId){wDrag=null; wheel.classList.remove('active');}};
+wheel.addEventListener('pointerup',wEnd); wheel.addEventListener('pointercancel',wEnd);
+wheel.addEventListener('wheel',e=>{
+  if(!canHumanShoot()) return;
+  e.preventDefault(); const d=(e.deltaY||e.deltaX)*0.4;
+  G.aim+=d*WHEEL_RAD_PER_PX; wOff+=d; wheelTex.style.backgroundPosition=portrait?`${wOff}px 0`:`0 ${wOff}px`;
+},{passive:false});
 
 powerEl.addEventListener('pointerdown',e=>{
   if(!canHumanShoot()) return;
@@ -1531,6 +1653,28 @@ const LABELS={ai1:['Компьютер · хялбар','Комп. · хялба
 function setLabels(){const n=innerWidth<560?1:0; for(const o of modeSel.options) o.textContent=LABELS[o.value][n];}
 setLabels();
 window.addEventListener('resize',()=>{setLabels(); layout();});
+const fsBtn=$('#fsBtn'), docEl=document.documentElement;
+const fsOn=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+if(document.fullscreenEnabled||document.webkitFullscreenEnabled){
+  fsBtn.hidden=false;
+  fsBtn.addEventListener('click',async()=>{
+    fsBtn.blur();
+    try{
+      if(fsOn()){ await (document.exitFullscreen||document.webkitExitFullscreen).call(document); }
+      else{
+        await (docEl.requestFullscreen||docEl.webkitRequestFullscreen).call(docEl,{navigationUI:'hide'});
+        try{ if(innerWidth<900&&screen.orientation&&screen.orientation.lock) await screen.orientation.lock('landscape'); }catch(_){}
+      }
+    }catch(_){}
+  });
+  const fsSync=()=>{fsBtn.textContent=fsOn()?'🗗':'⛶'; setTimeout(layout,120);};
+  document.addEventListener('fullscreenchange',fsSync); document.addEventListener('webkitfullscreenchange',fsSync);
+}
+if(!window.claude&&/^https?:$/.test(location.protocol)){
+  for(const [rel,href] of [['manifest','manifest.webmanifest'],['apple-touch-icon','icon-180.png'],['icon','icon-192.png']]){
+    const l=document.createElement('link'); l.rel=rel; l.href=href; document.head.appendChild(l);
+  }
+}
 if(window.ResizeObserver) new ResizeObserver(layout).observe(stage);
 
 /* ================= start ================= */
