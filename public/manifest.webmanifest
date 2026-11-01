@@ -1,0 +1,16 @@
+{
+  "name": "Билльярд — 8 бөмбөг",
+  "short_name": "Билльярд",
+  "description": "8 бөмбөгийн билльярд: компьютертэй, 2 хүн, онлайн",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#0c110f",
+  "theme_color": "#0c110f",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
